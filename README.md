@@ -4,6 +4,8 @@ In the project directory, you can run:
 
 ### npm install
 
+enter in apps/application and packages/appMenus to run npm install
+
 ### npm run start
 
 Runs the app in the development mode.
