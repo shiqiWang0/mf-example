@@ -2,6 +2,32 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const { FederatedTypesPlugin } = require('@module-federation/typescript')
+
+const federationConfig = {
+    name: 'application',
+    library: { type: 'var', name: 'application' },
+    // 另外一个应用html中引入的模块联邦入口文件
+    filename: 'remoteEntry.js',
+    // 这里是选择关联其他应用的组件
+    remotes: {
+        'appMenus': 'appMenus',
+        // 'appMenus':'appMenus@http://localhost:8080/remoteEntry.js',
+    },
+    // react react-dom会独立分包加载
+    //    shared: {
+    //       ...dependencies,
+    //       react: {
+    //         singleton: true,
+    //         requiredVersion: dependencies["react"],
+    //       },
+    //       "react-dom": {
+    //         singleton: true,
+    //         requiredVersion: dependencies["react-dom"],
+    //       },
+    //     }
+    // shared: ['react', 'react-dom'], 这样会error
+}
 
 module.exports = {
     entry: "./src/index.tsx",
@@ -30,7 +56,7 @@ module.exports = {
             },
         ]
     },
-    resolve: { extensions: ["*", ".js", ".jsx",".tsx",".ts"] },
+    resolve: { extensions: ["*", ".js", ".jsx", ".tsx", ".ts"] },
     output: {
         path: path.resolve(__dirname, "dist/"),
         // publicPath: "/dist/",
@@ -53,29 +79,8 @@ module.exports = {
             manifest: "./public/manifest.json",
             appleTouchIcon: './public/logo192.png'
         }),
-        new ModuleFederationPlugin({
-            name: 'application',
-            library: { type: 'var', name: 'application' },
-            // 另外一个应用html中引入的模块联邦入口文件
-            filename: 'remoteEntry.js',
-            // 这里是选择关联其他应用的组件
-            remotes: {
-              'appMenus': 'appMenus',
-            },
-            // react react-dom会独立分包加载
-        //    shared: {
-        //       ...dependencies,
-        //       react: {
-        //         singleton: true,
-        //         requiredVersion: dependencies["react"],
-        //       },
-        //       "react-dom": {
-        //         singleton: true,
-        //         requiredVersion: dependencies["react-dom"],
-        //       },
-        //     }
-            // shared: ['react', 'react-dom'], 这样会error
-          }),
+        new ModuleFederationPlugin({ ...federationConfig }),
+        // new FederatedTypesPlugin({federationConfig}),
     ],
     performance: { hints: false },
     externals: {
