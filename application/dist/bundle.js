@@ -251,12 +251,12 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ }),
 
 /***/ "webpack/container/reference/appMenus":
-/*!***************************!*\
-  !*** external "appMenus" ***!
-  \***************************/
+/*!***************************************************************************************!*\
+  !*** external "https://shiqiwang0.github.io/mf-example/appMenus/dist/remoteEntry.js" ***!
+  \***************************************************************************************/
 /***/ (function(module) {
 
-module.exports = appMenus;
+module.exports = https://shiqiwang0.github.io/mf-example/appMenus/dist/remoteEntry.js;
 
 /***/ })
 
@@ -400,7 +400,7 @@ module.exports = appMenus;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
-/******/ 		__webpack_require__.h = function() { return "1f3df4493316b92db7a2"; }
+/******/ 		__webpack_require__.h = function() { return "99e8e1d95ae528afb5a1"; }
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
