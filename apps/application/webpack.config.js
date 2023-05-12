@@ -1,18 +1,18 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const { ModuleFederationPlugin } = require("webpack").container;
 const { FederatedTypesPlugin } = require('@module-federation/typescript')
 
 const federationConfig = {
     name: 'application',
-    library: { type: 'var', name: 'application' },
     // 另外一个应用html中引入的模块联邦入口文件
     filename: 'remoteEntry.js',
     // 这里是选择关联其他应用的组件
     remotes: {
-        'appMenus': 'appMenus',
-        // 'appMenus':'appMenus@http://localhost:8080/remoteEntry.js',
+        // 'appMenus': 'appMenus',
+        // 'appMenus':"appMenus@https://shiqiwang0.github.io/mf-example/appMenus/dist/remoteEntry.js",
+        'appMenus':'appMenus@http://localhost:8080/remoteEntry.js',
     },
     // react react-dom会独立分包加载
     //    shared: {
@@ -67,7 +67,6 @@ module.exports = {
         hot: true,
         static: {
             directory: path.join(__dirname, 'public/'),
-            publicPath: '/dist',
         },
     },
     plugins: [

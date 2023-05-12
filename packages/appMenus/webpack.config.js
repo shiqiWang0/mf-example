@@ -8,7 +8,6 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 
 const federationConfig = {
   name: 'appMenus',
-  library: { type: 'var', name: 'appMenus' },
   filename: 'remoteEntry.js',
   // 当前组件需要暴露出去的组件
   exposes: {
@@ -16,7 +15,10 @@ const federationConfig = {
   },
   // 关联需要引入的其他应用
   remotes: {
-    'application': 'application',
+    // 'application':'application',
+    'application':'application@http://localhost:8080/remoteEntry.js'
+    // 测试环境远程地址;
+    // 'application': 'application@https://shiqiwang0.github.io/mf-example/application/dist/remoteEntry.js',
   },
   //   shared: { // 统一 react 等版本，避免重复加载
   //     ...dependencies,
@@ -35,7 +37,7 @@ module.exports = {
   mode: 'development',
   entry: './index.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist/browser'),
+    path: path.resolve(__dirname, 'dist/'),
     filename: '[name].bundle.js'
   },
   module: {
