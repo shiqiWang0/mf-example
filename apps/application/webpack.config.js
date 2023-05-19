@@ -2,7 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require("webpack").container;
-const { FederatedTypesPlugin } = require('@module-federation/typescript')
+// const { FederatedTypesPlugin } = require('@module-federation/typescript')
+const { dependencies } = require("./package.json");
 
 const federationConfig = {
     name: 'application',
@@ -10,22 +11,22 @@ const federationConfig = {
     filename: 'remoteEntry.js',
     // 这里是选择关联其他应用的组件
     remotes: {
-        // 'appMenus': 'appMenus',
+        // 'appMenus':'appMenus',
         // 'appMenus':"appMenus@https://shiqiwang0.github.io/mf-example/appMenus/dist/remoteEntry.js",
         'appMenus':'appMenus@http://localhost:8080/remoteEntry.js',
     },
     // react react-dom会独立分包加载
-    //    shared: {
-    //       ...dependencies,
-    //       react: {
-    //         singleton: true,
-    //         requiredVersion: dependencies["react"],
-    //       },
-    //       "react-dom": {
-    //         singleton: true,
-    //         requiredVersion: dependencies["react-dom"],
-    //       },
-    //     }
+       shared: {
+          ...dependencies,
+          react: {
+            singleton: true,
+            requiredVersion: dependencies["react"],
+          },
+          "react-dom": {
+            singleton: true,
+            requiredVersion: dependencies["react-dom"],
+          },
+        }
     // shared: ['react', 'react-dom'], 这样会error
 }
 

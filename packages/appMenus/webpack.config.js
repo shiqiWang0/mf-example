@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // 引入moduleFederation
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 // const {FederatedTypesPlugin} = require('@module-federation/typescript') // 自动生成 typeScript 但有问题
-// const { dependencies } = require("./package.json");
+const { dependencies } = require("./package.json");
 
 const federationConfig = {
   name: 'appMenus',
@@ -13,25 +13,17 @@ const federationConfig = {
   exposes: {
     './AppMenus': './src/App',
   },
-  // 关联需要引入的其他应用
-  remotes: {
-    // 'application':'application',
-    'application':'application@http://localhost:8080/remoteEntry.js'
-    // 测试环境远程地址;
-    // 'application': 'application@https://shiqiwang0.github.io/mf-example/application/dist/remoteEntry.js',
+  shared: { // 统一 react 等版本，避免重复加载
+    ...dependencies,
+    react: {
+      singleton: true,
+      requiredVersion: dependencies["react"],
+    },
+    "react-dom": {
+      singleton: true,
+      requiredVersion: dependencies["react-dom"],
+    },
   },
-  //   shared: { // 统一 react 等版本，避免重复加载
-  //     ...dependencies,
-  //     react: {
-  //       singleton: true,
-  //       requiredVersion: dependencies["react"],
-  //     },
-  //     "react-dom": {
-  //       singleton: true,
-  //       requiredVersion: dependencies["react-dom"],
-  //     },
-  //   },
-  //   // shared: ['react', 'react-dom'],
 }
 module.exports = {
   mode: 'development',
